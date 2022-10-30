@@ -5,11 +5,14 @@
   "main": "index.js",
   "scripts": {
     "gen": "ts-node ./index.ts",
-    "lint": "eslint . --ext .ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint . --ext .ts"
   },
   "author": "Nien Van",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rocketmo/gh-org-stats.git"
+  },
   "dependencies": {
     "dotenv": "^16.0.3",
     "graphql": "^16.6.0",
