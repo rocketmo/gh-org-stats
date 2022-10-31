@@ -1,8 +1,8 @@
 import { gql, GraphQLClient } from 'graphql-request';
 import { waitForRateLimit } from '../../util';
-import { UNKNOWN_USER } from '../../constants';
+import { UNKNOWN_LOGIN, UNKNOWN_USER } from '../../constants';
 
-interface CommitsQueryOptions {
+export interface CommitsQueryOptions {
   org: string;
   repo: string;
   startDate?: string;
@@ -13,7 +13,8 @@ interface CommitsQueryOptions {
 export interface Commit {
   org: string;
   repo: string;
-  author: string;
+  authorLogin: string;
+  authorName: string;
   committedDate: string;
   additions: number;
   deletions: number;
@@ -45,7 +46,8 @@ function getCommitsQuery(opts: CommitsQueryOptions): string {
                   author {
                     name,
                     user {
-                      login
+                      login,
+                      name
                     }
                   },
                   committedDate,
@@ -87,7 +89,12 @@ export async function getCommits(
       commits.push({
         org: opts.org,
         repo: opts.repo,
-        author: node?.author?.user?.login || UNKNOWN_USER,
+        authorLogin: node?.author?.user?.login || UNKNOWN_LOGIN,
+        authorName:
+          node?.author?.user?.name ||
+          node?.author?.name ||
+          node?.author?.user?.login ||
+          UNKNOWN_USER,
         committedDate: node.committedDate,
         additions: node.additions || 0,
         deletions: node.deletions || 0,

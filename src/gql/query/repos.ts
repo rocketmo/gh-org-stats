@@ -1,7 +1,7 @@
 import { gql, GraphQLClient } from 'graphql-request';
 import { waitForRateLimit } from '../../util';
 
-interface ReposQueryOptions {
+export interface ReposQueryOptions {
   org: string;
   after?: string;
 }
