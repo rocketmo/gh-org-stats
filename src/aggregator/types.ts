@@ -4,6 +4,7 @@ export interface RepoInfo {
   additions: number;
   deletions: number;
   pulls: number;
+  pullsMerged: number;
   reviews: number;
   comments: number;
 }
@@ -15,6 +16,7 @@ export interface UserInfo {
   additions: number;
   deletions: number;
   pulls: number;
+  pullsMerged: number;
   reviews: number;
   comments: number;
 }

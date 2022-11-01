@@ -7,6 +7,7 @@ import {
 } from './types';
 import { buildDefaultRepoInfo, buildDefaultUserInfo, buildDefaultUserInfoExtended } from './util';
 import { Commit } from '../gql/query/commits';
+import { PullRequest } from '../gql/query/pull-requests/types';
 import { Repo } from '../gql/query/repos';
 import { User } from '../gql/query/users';
 
@@ -41,6 +42,14 @@ export class OrgDataAggregator {
     }
   }
 
+  aggregatePullRequests(pullRequests: PullRequest[]): void {
+    for (const pullRequest of pullRequests) {
+      this.addPullRequestToRepoMap(pullRequest);
+      this.addPullRequestToUserMap(pullRequest);
+      this.addPullRequestToUserByRepoMap(pullRequest);
+    }
+  }
+
   aggregateUsers(users: User[]): void {
     for (const user of users) {
       this.allowedUsersSet.add(user.login);
@@ -70,6 +79,7 @@ export class OrgDataAggregator {
         additions: userInfoExtended.additions,
         deletions: userInfoExtended.deletions,
         pulls: userInfoExtended.pulls,
+        pullsMerged: userInfoExtended.pullsMerged,
         reviews: userInfoExtended.reviews,
         comments: userInfoExtended.comments,
         uniqueRepoCommitCount: userInfoExtended.uniqueRepoCommits.size,
@@ -113,6 +123,92 @@ export class OrgDataAggregator {
     userInfo.commits += 1;
     userInfo.additions += commit.additions;
     userInfo.deletions += commit.deletions;
+  }
+
+  private addPullRequestToRepoMap(pullRequest: PullRequest): void {
+    const repoInfo = this.getRepoFromMap(pullRequest.repo);
+    repoInfo.pulls += 1;
+    repoInfo.pullsMerged += pullRequest.wasMerged ? 1 : 0;
+    repoInfo.reviews += pullRequest.reviewUsers.length;
+
+    for (const commentCountObj of pullRequest.reviewCommentsCount) {
+      repoInfo.comments += commentCountObj.count;
+    }
+  }
+
+  private addPullRequestToUserMap(pullRequest: PullRequest): void {
+    if (!this.allowedUsersSet.has(pullRequest.author.login)) {
+      return;
+    }
+
+    const userInfoExtended = this.getUserExtendedFromMap(
+      pullRequest.author.login,
+      pullRequest.author.name,
+    );
+    userInfoExtended.pulls += 1;
+    userInfoExtended.pullsMerged += pullRequest.wasMerged ? 1 : 0;
+
+    this.addPullRequestReviewersToUserMap(pullRequest.repo, pullRequest.reviewUsers);
+    this.addPullRequestCommentersToUserMap(pullRequest.reviewCommentsCount);
+  }
+
+  private addPullRequestToUserByRepoMap(pullRequest: PullRequest): void {
+    const userInfo = this.getUserByRepo(
+      pullRequest.repo,
+      pullRequest.author.login,
+      pullRequest.author.name,
+    );
+    userInfo.pulls += 1;
+    userInfo.pullsMerged += pullRequest.wasMerged ? 1 : 0;
+
+    this.addPullRequestReviewersToUserByRepoMap(pullRequest.repo, pullRequest.reviewUsers);
+    this.addPullRequestCommentersToUserByRepoMap(pullRequest.repo, pullRequest.reviewCommentsCount);
+  }
+
+  private addPullRequestReviewersToUserMap(
+    repo: string,
+    reviewers: PullRequest['reviewUsers'],
+  ): void {
+    for (const reviewer of reviewers) {
+      if (!this.allowedUsersSet.has(reviewer.login)) {
+        continue;
+      }
+
+      const userInfoExtended = this.getUserExtendedFromMap(reviewer.login, reviewer.name);
+      userInfoExtended.reviews += 1;
+      userInfoExtended.uniqueRepoReviews.add(repo);
+    }
+  }
+
+  private addPullRequestReviewersToUserByRepoMap(
+    repo: string,
+    reviewers: PullRequest['reviewUsers'],
+  ): void {
+    for (const reviewer of reviewers) {
+      const userInfo = this.getUserByRepo(repo, reviewer.login, reviewer.name);
+      userInfo.reviews += 1;
+    }
+  }
+
+  private addPullRequestCommentersToUserMap(commenters: PullRequest['reviewCommentsCount']): void {
+    for (const commenter of commenters) {
+      if (!this.allowedUsersSet.has(commenter.login)) {
+        continue;
+      }
+
+      const userInfoExtended = this.getUserExtendedFromMap(commenter.login, commenter.name);
+      userInfoExtended.comments += commenter.count;
+    }
+  }
+
+  private addPullRequestCommentersToUserByRepoMap(
+    repo: string,
+    commenters: PullRequest['reviewCommentsCount'],
+  ): void {
+    for (const commenter of commenters) {
+      const userInfo = this.getUserByRepo(repo, commenter.login, commenter.name);
+      userInfo.comments += commenter.count;
+    }
   }
 
   private getRepoFromMap(repoName: string): RepoInfo {

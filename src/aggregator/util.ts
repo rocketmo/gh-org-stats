@@ -7,6 +7,7 @@ export function buildDefaultRepoInfo(repoName: string): RepoInfo {
     additions: 0,
     deletions: 0,
     pulls: 0,
+    pullsMerged: 0,
     reviews: 0,
     comments: 0,
   };
@@ -20,6 +21,7 @@ export function buildDefaultUserInfo(userLogin: string, userName: string): UserI
     additions: 0,
     deletions: 0,
     pulls: 0,
+    pullsMerged: 0,
     reviews: 0,
     comments: 0,
   };

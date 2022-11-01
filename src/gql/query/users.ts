@@ -24,7 +24,6 @@ function getUserQuery(opts: UsersQueryOptions): string {
         membersWithRole(${memberOpts}) {
           nodes { login, name },
           pageInfo {
-            startCursor,
             endCursor,
             hasNextPage
           }

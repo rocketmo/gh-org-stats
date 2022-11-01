@@ -24,7 +24,6 @@ function getRepoQuery(opts: ReposQueryOptions): string {
         repositories(${repoOpts}) {
           nodes { name },
           pageInfo {
-            startCursor,
             endCursor,
             hasNextPage
           }

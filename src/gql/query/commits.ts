@@ -56,7 +56,6 @@ function getCommitsQuery(opts: CommitsQueryOptions): string {
                   signature { isValid }
                 },
                 pageInfo {
-                  startCursor,
                   endCursor,
                   hasNextPage
                 }

@@ -14,6 +14,7 @@ async function main(): Promise<void> {
   await aggregateRepoData(client, aggregator);
   await aggregateUserData(client, aggregator);
   await aggregateCommitData(client, aggregator);
+  await aggregatePullRequestData(client, aggregator);
 
   const exporter = new OrgDataExporter(aggregator);
   await exporter.exportRepoData();
@@ -59,6 +60,25 @@ async function aggregateCommitData(
 
     aggregator.aggregateCommits(commits);
     console.log(`Aggregated ${commits.length} commit(s) for ${repoName}.`);
+
+    await waitForRateLimit();
+  }
+}
+
+async function aggregatePullRequestData(
+  client: OrgDataClient,
+  aggregator: OrgDataAggregator,
+): Promise<void> {
+  for (const repoName of aggregator.getRepoNames()) {
+    const pullRequests = await client.getPullRequests({
+      org: process.env.ORG,
+      repo: repoName,
+      startDate: process.env.START_DATE,
+      endDate: process.env.END_DATE,
+    });
+
+    aggregator.aggregatePullRequests(pullRequests);
+    console.log(`Aggregated ${pullRequests.length} pull request(s) for ${repoName}.`);
 
     await waitForRateLimit();
   }
