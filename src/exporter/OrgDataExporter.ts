@@ -48,8 +48,8 @@ export class OrgDataExporter {
         { id: 'pullsMerged', title: 'Pull requests merged' },
         { id: 'reviews', title: 'Code reviews' },
         { id: 'comments', title: 'Code review thread comments' },
-        { id: 'uniqueRepoCommitCount', title: 'Repos with >1 commit' },
-        { id: 'uniqueRepoReviewCount', title: 'Repos with >1 code review' },
+        { id: 'uniqueRepoCommitCount', title: 'Repos with >0 commit' },
+        { id: 'uniqueRepoReviewCount', title: 'Repos with >0 code review' },
       ],
     });
 

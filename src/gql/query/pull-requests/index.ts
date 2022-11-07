@@ -1,6 +1,6 @@
 import { GraphQLClient } from 'graphql-request';
 import moment, { Moment } from 'moment';
-import { waitForRateLimit } from '../../../util';
+import { waitForRateLimit, waitForPullRequestRateLimit } from '../../../util';
 import { UNKNOWN_LOGIN, UNKNOWN_USER } from '../../../constants';
 import {
   Comment,
@@ -39,6 +39,8 @@ export async function getPullRequests(
 
     for (const node of pullRequestData.nodes) {
       const createdAtMoment = moment(node.createdAt);
+      const mergedAtMoment = node.mergedAt ? moment(node.node) : undefined;
+
       if (startMoment && createdAtMoment.isBefore(startMoment)) {
         after = undefined;
         break;
@@ -72,14 +74,17 @@ export async function getPullRequests(
           login: node.author?.login || UNKNOWN_LOGIN,
           name: node.author?.name || node.author?.login || UNKNOWN_USER,
         },
-        wasMerged: !!node.merged,
+        wasMerged:
+          !!node.merged &&
+          (!startMoment || mergedAtMoment.isAfter(startMoment)) &&
+          (!endMoment || mergedAtMoment.isBefore(endMoment)),
         reviewUsers: Array.from(reviewersMap.values()),
         reviewCommentsCount: Array.from(reviewCommentsMap.values()),
       });
     }
 
     if (after) {
-      await waitForRateLimit();
+      await waitForPullRequestRateLimit();
     }
   } while (after);
 

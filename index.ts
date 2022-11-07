@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 import { OrgDataAggregator } from './src/aggregator/OrgDataAggregator';
 import { OrgDataClient } from './src/gql/OrgDataClient';
 import { OrgDataExporter } from './src/exporter/OrgDataExporter';
-import { waitForRateLimit } from './src/util';
+import { waitForRateLimit, waitForPullRequestRateLimit } from './src/util';
 
 dotenv.config();
 main();
@@ -80,6 +80,6 @@ async function aggregatePullRequestData(
     aggregator.aggregatePullRequests(pullRequests);
     console.log(`Aggregated ${pullRequests.length} pull request(s) for ${repoName}.`);
 
-    await waitForRateLimit();
+    await waitForPullRequestRateLimit();
   }
 }
