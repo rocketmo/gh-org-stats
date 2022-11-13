@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "gen": "ts-node ./index.ts",
-    "lint": "eslint . --ext .ts"
+    "lint": "tsc --noEmit && eslint . --ext .ts"
   },
   "author": "Nien Van",
   "license": "ISC",

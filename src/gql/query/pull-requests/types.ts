@@ -18,7 +18,8 @@ export interface PullRequest {
 }
 
 export interface ReviewCommentsCount extends User {
-  count: number;
+  comments: number;
+  reviewThreads: number;
 }
 
 export interface PageInfo {

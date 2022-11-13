@@ -6,6 +6,7 @@ export interface RepoInfo {
   pulls: number;
   pullsMerged: number;
   reviews: number;
+  reviewThreads: number;
   comments: number;
 }
 
@@ -18,6 +19,7 @@ export interface UserInfo {
   pulls: number;
   pullsMerged: number;
   reviews: number;
+  reviewThreads: number;
   comments: number;
 }
 

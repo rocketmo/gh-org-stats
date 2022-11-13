@@ -24,6 +24,7 @@ export class OrgDataExporter {
         { id: 'pulls', title: 'Pull requests created' },
         { id: 'pullsMerged', title: 'Pull requests merged' },
         { id: 'reviews', title: 'Code reviews' },
+        { id: 'reviewThreads', title: 'Code review threads' },
         { id: 'comments', title: 'Code review thread comments' },
       ],
     });
@@ -47,6 +48,7 @@ export class OrgDataExporter {
         { id: 'pulls', title: 'Pull requests created' },
         { id: 'pullsMerged', title: 'Pull requests merged' },
         { id: 'reviews', title: 'Code reviews' },
+        { id: 'reviewThreads', title: 'Code review threads started' },
         { id: 'comments', title: 'Code review thread comments' },
         { id: 'uniqueRepoCommitCount', title: 'Repos with >0 commit' },
         { id: 'uniqueRepoReviewCount', title: 'Repos with >0 code review' },
@@ -73,6 +75,7 @@ export class OrgDataExporter {
         { id: 'pulls', title: 'Pull requests created' },
         { id: 'pullsMerged', title: 'Pull requests merged' },
         { id: 'reviews', title: 'Code reviews' },
+        { id: 'reviewThreads', title: 'Code review threads started' },
         { id: 'comments', title: 'Code review thread comments' },
       ],
     });

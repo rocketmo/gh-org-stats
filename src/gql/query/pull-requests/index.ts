@@ -167,8 +167,10 @@ async function buildReviewCommentsMap(
       comments.push(...additionalComments);
     }
 
-    for (const comment of comments) {
-      // Don't include comments that are outside the date bouds
+    for (let commentIdx = 0; commentIdx < comments.length; commentIdx += 1) {
+      const comment = comments[commentIdx];
+
+      // Don't include comments that are outside the date bounds
       const commentMoment = moment(comment.createdAt);
       if (
         (startMoment && commentMoment.isBefore(startMoment)) ||
@@ -183,12 +185,17 @@ async function buildReviewCommentsMap(
         reviewCommentCount = {
           login,
           name: comment.author?.name || comment.author?.login || UNKNOWN_USER,
-          count: 0,
+          reviewThreads: 0,
+          comments: 0,
         };
         reviewCommentsMap.set(login, reviewCommentCount);
       }
 
-      reviewCommentCount.count += 1;
+      reviewCommentCount.comments += 1;
+
+      if (commentIdx === 0) {
+        reviewCommentCount.reviewThreads += 1;
+      }
     }
   }
 

@@ -81,6 +81,7 @@ export class OrgDataAggregator {
         pulls: userInfoExtended.pulls,
         pullsMerged: userInfoExtended.pullsMerged,
         reviews: userInfoExtended.reviews,
+        reviewThreads: userInfoExtended.reviews,
         comments: userInfoExtended.comments,
         uniqueRepoCommitCount: userInfoExtended.uniqueRepoCommits.size,
         uniqueRepoReviewCount: userInfoExtended.uniqueRepoReviews.size,
@@ -132,7 +133,8 @@ export class OrgDataAggregator {
     repoInfo.reviews += pullRequest.reviewUsers.length;
 
     for (const commentCountObj of pullRequest.reviewCommentsCount) {
-      repoInfo.comments += commentCountObj.count;
+      repoInfo.comments += commentCountObj.comments;
+      repoInfo.reviewThreads += commentCountObj.reviewThreads;
     }
   }
 
@@ -197,7 +199,8 @@ export class OrgDataAggregator {
       }
 
       const userInfoExtended = this.getUserExtendedFromMap(commenter.login, commenter.name);
-      userInfoExtended.comments += commenter.count;
+      userInfoExtended.comments += commenter.comments;
+      userInfoExtended.reviewThreads += commenter.reviewThreads;
     }
   }
 
@@ -207,7 +210,8 @@ export class OrgDataAggregator {
   ): void {
     for (const commenter of commenters) {
       const userInfo = this.getUserByRepo(repo, commenter.login, commenter.name);
-      userInfo.comments += commenter.count;
+      userInfo.comments += commenter.comments;
+      userInfo.reviewThreads += commenter.reviewThreads;
     }
   }
 
