@@ -139,16 +139,15 @@ export class OrgDataAggregator {
   }
 
   private addPullRequestToUserMap(pullRequest: PullRequest): void {
-    if (!this.allowedUsersSet.has(pullRequest.author.login)) {
-      return;
-    }
+    if (this.allowedUsersSet.has(pullRequest.author.login)) {
+      const userInfoExtended = this.getUserExtendedFromMap(
+        pullRequest.author.login,
+        pullRequest.author.name,
+      );
 
-    const userInfoExtended = this.getUserExtendedFromMap(
-      pullRequest.author.login,
-      pullRequest.author.name,
-    );
-    userInfoExtended.pulls += 1;
-    userInfoExtended.pullsMerged += pullRequest.wasMerged ? 1 : 0;
+      userInfoExtended.pulls += 1;
+      userInfoExtended.pullsMerged += pullRequest.wasMerged ? 1 : 0;
+    }
 
     this.addPullRequestReviewersToUserMap(pullRequest.repo, pullRequest.reviewUsers);
     this.addPullRequestCommentersToUserMap(pullRequest.reviewCommentsCount);
