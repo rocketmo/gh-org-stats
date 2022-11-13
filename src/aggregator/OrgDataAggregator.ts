@@ -81,7 +81,7 @@ export class OrgDataAggregator {
         pulls: userInfoExtended.pulls,
         pullsMerged: userInfoExtended.pullsMerged,
         reviews: userInfoExtended.reviews,
-        reviewThreads: userInfoExtended.reviews,
+        reviewThreads: userInfoExtended.reviewThreads,
         comments: userInfoExtended.comments,
         uniqueRepoCommitCount: userInfoExtended.uniqueRepoCommits.size,
         uniqueRepoReviewCount: userInfoExtended.uniqueRepoReviews.size,
