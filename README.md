@@ -32,3 +32,5 @@ END_DATE=2023-01-01T00:00:00Z
 
 To create an appropriate personal access token, follow the steps outlined 
 [here](https://docs.github.com/en/graphql/guides/forming-calls-with-graphql#authenticating-with-graphql).
+
+Reports will be generated in the `/out` folder.
