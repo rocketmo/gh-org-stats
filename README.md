@@ -22,5 +22,13 @@ Example:
 ORG=MyOrg PAT=My_PAT START_DATE=2022-01-01T00:00:00Z END_DATE=2023-01-01T00:00:00Z npm run gen
 ```
 
+You can also keep these settings in a `.env` file, stored in the root folder. Here's an example of what a `.env` file might look like:
+```
+ORG=MyOrg
+PAT=My_PAT
+START_DATE=2022-01-01T00:00:00Z
+END_DATE=2023-01-01T00:00:00Z
+```
+
 To create an appropriate personal access token, follow the steps outlined 
 [here](https://docs.github.com/en/graphql/guides/forming-calls-with-graphql#authenticating-with-graphql).
