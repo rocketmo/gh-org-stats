@@ -12,7 +12,7 @@ To run the script, run `npm run gen` with the following options.
 
 | Option             | Description                                                   |
 | ------------------ | ------------------------------------------------------------- |
-| `ORG`              | (required) The organization you want to aggregate states for. |
+| `ORG`              | (required) The organization you want to aggregate stats for.  |
 | `PAT`              | (required) Github personal access token.                      |
 | `START_DATE`       | (optional) ISO Date to capture data after.                    |
 | `END_DATE`         | (optional) ISO Date to capture data before.                   |
