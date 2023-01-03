@@ -39,7 +39,7 @@ export async function getPullRequests(
 
     for (const node of pullRequestData.nodes) {
       const createdAtMoment = moment(node.createdAt);
-      const mergedAtMoment = node.mergedAt ? moment(node.node) : undefined;
+      const mergedAtMoment = node.mergedAt ? moment(node.mergedAt) : undefined;
 
       if (startMoment && createdAtMoment.isBefore(startMoment)) {
         after = undefined;

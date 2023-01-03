@@ -79,10 +79,11 @@ export async function getCommits(
     const query = getCommitsQuery({ ...opts, after });
     const results = await client.request(query);
 
-    const history = results.repository.defaultBranchRef.target.history;
-    after = history.pageInfo.hasNextPage ? history.pageInfo.endCursor : undefined;
+    const history = results.repository.defaultBranchRef?.target?.history;
+    const nodes = history?.nodes || [];
+    after = history?.pageInfo?.hasNextPage ? history?.pageInfo?.endCursor : undefined;
 
-    for (const node of history.nodes) {
+    for (const node of nodes) {
       if (!node.signature?.isValid) continue;
 
       commits.push({
